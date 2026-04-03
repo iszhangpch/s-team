@@ -18,22 +18,22 @@ Do not re-ask the user about business requirements — that's settled in spec.md
 
 ## Process
 
-1. Read `spec.md` fully. Extract all requirements, domain rules, and acceptance criteria.
+1. Read `.s-team/spec.md` fully. Extract all requirements, domain rules, and acceptance criteria.
 2. Explore the codebase (read-only): understand existing structure, patterns, naming conventions, testing setup, dependencies.
 3. Make all technical decisions. Design the modules and interfaces needed to satisfy spec.md.
-4. Draft `task.md` using `.claude/templates/task.md.tpl`. Include:
+4. Draft `.s-team/task.md` using `.claude/templates/task.md.tpl`. Include:
    - Technical approach section: the architecture decisions you made and why
    - Module design: what each new/modified module is responsible for
    - One task per logical unit of work, with exact file paths and acceptance criteria
 5. Message the Evaluator: "Draft task.md ready for review:" followed by the full draft.
 6. Respond to Evaluator feedback. Revise and resubmit until Evaluator replies "LGTM — proceed."
-7. Write the final approved `task.md` to the project root.
+7. Write the final approved task plan to `.s-team/task.md`.
 8. Send a message to the lead: "task.md complete."
 9. Mark your task complete.
 
 ## Rules
 
-- Read-only codebase exploration. Do not edit any files except task.md.
+- Read-only codebase exploration. Do not edit any files except `.s-team/task.md`.
 - Every task must cover exactly one logical unit of work with exact file paths.
 - No vague tasks: "implement auth" is not a task. "Add `POST /auth/login` in `src/routes/auth.ts` that validates credentials against `UserRepository` and returns a signed JWT" is a task.
 - All technical decisions must be documented in task.md so Generator has zero ambiguity.

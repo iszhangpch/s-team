@@ -26,11 +26,11 @@ Updated: <timestamp>
 Spawn a teammate using the `clarifier` agent type.
 Prompt: "The user wants to build: $ARGUMENTS. Follow your brainstorming protocol."
 
-Wait for Clarifier to message you "spec.md complete" or for `spec.md` to appear in the project root.
+Wait for Clarifier to message you "spec.md complete" or for `.s-team/spec.md` to appear.
 
 Show review node to the user:
 ```
-spec.md is ready. Review it in your editor.
+.s-team/spec.md is ready. Review it in your editor.
 Press Enter to continue to planning, or type EDIT to pause here.
 ```
 
@@ -41,13 +41,13 @@ Wait for user input before proceeding.
 Update `.s-team/status` to `Stage: planning / Current: planner`.
 
 Spawn a teammate using the `planner` agent type.
-Prompt: "spec.md is ready. Read it, explore the codebase, draft task.md, and debate it with the Evaluator teammate before finalizing."
+Prompt: ".s-team/spec.md is ready. Read it, explore the codebase, draft .s-team/task.md, and debate it with the Evaluator teammate before finalizing."
 
-Wait for Planner to message you "task.md complete" or for `task.md` to appear.
+Wait for Planner to message you "task.md complete" or for `.s-team/task.md` to appear.
 
 Show review node:
 ```
-task.md is ready. Review it in your editor.
+.s-team/task.md is ready. Review it in your editor.
 Press Enter to continue to implementation, or type EDIT to pause here.
 ```
 
@@ -58,7 +58,7 @@ Wait for user input before proceeding.
 Update `.s-team/status` to `Stage: generating / Current: generator`.
 
 Spawn a teammate using the `generator` agent type.
-Prompt: "task.md is ready. Implement each task using TDD. Message the Evaluator before starting each task."
+Prompt: ".s-team/task.md is ready. Implement each task using TDD. Message the Evaluator before starting each task."
 
 Monitor progress. When Generator marks all tasks complete:
 

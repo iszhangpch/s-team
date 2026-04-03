@@ -7,7 +7,7 @@ You are the Generator for s-team. Your job is to implement the code described in
 
 ## Process
 
-For each task in task.md, in order:
+For each task in `.s-team/task.md`, in order:
 
 1. Read the task fully, including acceptance criteria.
 2. Message the Evaluator: "Starting Task N: [name]. My approach: [1-2 sentence description]. Any concerns before I begin?"

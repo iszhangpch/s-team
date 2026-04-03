@@ -87,16 +87,20 @@ s-team/
 
 ### Evaluator
 
-**Responsibility:** Review each stage's output and enforce quality gates. Does not produce code; only approves, patches minor issues, or escalates.
+**Responsibility:** Dual role — pre-output brainstorming partner and post-output quality gate. Does not produce code; challenges, patches minor issues, or escalates.
 
-**Trigger:** `TaskCompleted` hook fires automatically when any teammate marks a task complete.
+**Layer 1 — Pre-output brainstorming (agent-to-agent):**
+Evaluator stays online throughout the pipeline. Before Planner or Generator finalizes their output, they send a draft via mailbox to Evaluator. Evaluator challenges assumptions, pokes holes, and suggests improvements. The active agent revises and resubmits until both converge. This loop is fully autonomous — no human involvement.
+
+**Layer 2 — Post-output quality gate:**
+`TaskCompleted` hook fires when any teammate marks a task complete. Evaluator does a final pass.
 
 **Decision tiers:**
 - **Minor issues** (typos, formatting, small gaps): auto-fix and re-approve
 - **Major issues** (wrong direction, missing requirements, broken tests): exit code 2 (blocks completion), send feedback to the relevant teammate for rework
 - **Escalation** (repeated failures, ambiguous requirements): pause and surface to user
 
-**Interaction:** Runs in background; escalations appear as pauses with explanation.
+**Interaction:** Always-on teammate. Brainstorming rounds visible in its own tmux pane; escalations appear as pauses with explanation.
 
 ## Flow
 
@@ -117,16 +121,19 @@ Lead spawns Clarifier teammate
   │
   ▼  [Review node: Enter to continue / E to edit spec.md]
   │
-Lead spawns Planner teammate
+Lead spawns Planner teammate (Evaluator already online)
   - Reads codebase + spec.md
-  - Outputs task.md
-  - Marks task complete → Evaluator hook fires
+  - Sends draft task.md to Evaluator → debate rounds via mailbox
+  - Finalizes task.md
+  - Marks task complete → Evaluator quality gate (Layer 2)
   │
   ▼  [Review node: Enter to continue / E to edit task.md]
   │
 Lead spawns Generator teammate
-  - Implements code per task.md
-  - Marks tasks complete → Evaluator hook fires per task
+  - Reads task.md
+  - Sends implementation plan to Evaluator → debate rounds via mailbox
+  - Implements code
+  - Marks tasks complete → Evaluator quality gate per task (Layer 2)
   │
   ▼  [Review node: Enter to continue / E to review diffs]
   │
@@ -219,6 +226,7 @@ Escape hatch: Ctrl+C at any point, then `./s-team resume --from <stage>` to rest
 | After Clarifier | Review node: confirm or edit spec.md |
 | After Planner | Review node: confirm or edit task.md |
 | After Generator | Review node: confirm or review diffs |
+| Evaluator (brainstorming) | None — fully agent-to-agent via mailbox |
 | Evaluator escalation | Paused with explanation, user decides |
 | Any stage | Ctrl+C to interrupt, `resume --from <stage>` to restart |
 

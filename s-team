@@ -63,5 +63,5 @@ else
   TASK="$1"
   exec claude --teammate-mode tmux "Start the s-team coding pipeline for this task: ${TASK}
 
-Follow the pipeline defined in CLAUDE.md."
+Run /s-team with the task description to begin."
 fi

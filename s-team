@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+# s-team — coding team entry point
+# Usage:
+#   ./s-team "<task description>"
+#   ./s-team resume --from <clarifier|planner|generator>
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SESSION="s-team"
+STATUS_FILE=".s-team/status"
+
+usage() {
+  echo "Usage:"
+  echo "  ./s-team \"<task description>\""
+  echo "  ./s-team resume --from <clarifier|planner|generator>"
+  exit 1
+}
+
+# Check dependencies
+check_deps() {
+  if ! command -v tmux &>/dev/null; then
+    echo "Error: tmux is required. Install: brew install tmux"
+    exit 1
+  fi
+  if ! command -v claude &>/dev/null; then
+    echo "Error: claude CLI is required. Install Claude Code."
+    exit 1
+  fi
+}
+
+# Write pipeline status
+write_status() {
+  mkdir -p "$(dirname "$STATUS_FILE")"
+  cat > "$STATUS_FILE" <<EOF
+Stage: $1
+Current: $2
+Updated: $(date '+%Y-%m-%d %H:%M:%S')
+EOF
+}
+
+# Set up tmux: left 70% main, right 30% status
+setup_tmux() {
+  # Kill existing session if present
+  tmux kill-session -t "$SESSION" 2>/dev/null || true
+
+  # New session, detached
+  tmux new-session -d -s "$SESSION"
+
+  # Split right pane (30%) for status
+  tmux split-window -h -p 30 -t "$SESSION:0"
+
+  # Right pane: watch status file
+  tmux send-keys -t "$SESSION:0.1" \
+    "watch -n 2 'cat ${STATUS_FILE} 2>/dev/null || echo \"Waiting for pipeline...\"'" \
+    Enter
+
+  # Focus left pane
+  tmux select-pane -t "$SESSION:0.0"
+}
+
+# Build the initial prompt for the lead
+build_prompt() {
+  local mode="$1"
+  local detail="$2"
+
+  if [[ "$mode" == "start" ]]; then
+    echo "Start the s-team coding pipeline for this task: ${detail}
+
+Follow the pipeline defined in CLAUDE.md:
+1. Spawn Evaluator teammate first (stays online throughout)
+2. Spawn Clarifier teammate (talks to user, produces spec.md)
+3. After spec.md is ready and user confirms, spawn Planner (debates with Evaluator, produces task.md)
+4. After task.md is ready and user confirms, spawn Generator (debates with Evaluator, implements code)
+
+Write pipeline status updates to ${STATUS_FILE} as each stage changes."
+
+  elif [[ "$mode" == "resume" ]]; then
+    echo "Resume the s-team pipeline from the ${detail} stage.
+
+Existing files are in place — read them before spawning teammates:
+- spec.md (if Clarifier already completed)
+- task.md (if Planner already completed)
+
+Spawn Evaluator first if not already running, then spawn the ${detail} teammate.
+Write status updates to ${STATUS_FILE}."
+  fi
+}
+
+# Main
+check_deps
+
+if [[ $# -eq 0 ]]; then
+  usage
+fi
+
+if [[ "$1" == "resume" ]]; then
+  if [[ "${2:-}" != "--from" ]] || [[ -z "${3:-}" ]]; then
+    usage
+  fi
+  STAGE="$3"
+  if [[ "$STAGE" != "clarifier" && "$STAGE" != "planner" && "$STAGE" != "generator" ]]; then
+    echo "Error: --from must be one of: clarifier, planner, generator"
+    exit 1
+  fi
+  PROMPT="$(build_prompt resume "$STAGE")"
+  write_status "resuming" "$STAGE"
+else
+  TASK="$1"
+  PROMPT="$(build_prompt start "$TASK")"
+  write_status "starting" "clarifier"
+fi
+
+setup_tmux
+
+# Launch claude in left pane with the prompt
+tmux send-keys -t "$SESSION:0.0" "claude \"$PROMPT\"" Enter
+
+# Attach
+exec tmux attach-session -t "$SESSION"

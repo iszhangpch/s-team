@@ -25,17 +25,22 @@ if ! command -v claude &>/dev/null; then
   exit 1
 fi
 
-# Claude Code's tmux split-pane mode requires running inside a tmux session.
-# If not already in tmux, create a session and re-launch inside it.
+# Claude Code's split-pane mode requires running inside a tmux session.
+# If not already in tmux, create one. In iTerm2, use tmux -CC for native integration.
 if [[ -z "${TMUX:-}" ]]; then
   if ! command -v tmux &>/dev/null; then
     echo "Error: tmux is required for split-pane mode. Install: brew install tmux"
     exit 1
   fi
-  # Re-run this script inside a new tmux session
   SESSION="s-team-$$"
-  exec tmux new-session -s "$SESSION" -e "TMUX_SESSION=$SESSION" \
-    "$(realpath "$0") $(printf '%q ' "$@")"
+  ARGS="$(printf '%q ' "$@")"
+  SCRIPT="$(realpath "$0")"
+  if [[ "${TERM_PROGRAM:-}" == "iTerm.app" ]]; then
+    # iTerm2: use tmux -CC for native pane integration
+    exec tmux -CC new-session -s "$SESSION" "$SCRIPT $ARGS"
+  else
+    exec tmux new-session -s "$SESSION" "$SCRIPT $ARGS"
+  fi
 fi
 
 if [[ "$1" == "resume" ]]; then

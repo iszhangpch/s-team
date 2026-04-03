@@ -34,7 +34,7 @@ if [[ "$1" == "resume" ]]; then
     echo "Error: --from must be one of: clarifier, planner, generator"
     exit 1
   fi
-  exec claude "Resume the s-team pipeline from the ${STAGE} stage.
+  exec claude --teammate-mode tmux "Resume the s-team pipeline from the ${STAGE} stage.
 
 Existing files are in place — read them before spawning teammates:
 - spec.md (if Clarifier already completed)
@@ -43,7 +43,7 @@ Existing files are in place — read them before spawning teammates:
 Spawn Evaluator first if not already running, then spawn the ${STAGE} teammate."
 else
   TASK="$1"
-  exec claude "Start the s-team coding pipeline for this task: ${TASK}
+  exec claude --teammate-mode tmux "Start the s-team coding pipeline for this task: ${TASK}
 
 Follow the pipeline defined in CLAUDE.md."
 fi

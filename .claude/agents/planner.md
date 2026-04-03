@@ -43,7 +43,7 @@ Wait for Evaluator response:
 
 ### Step 4: Notify lead
 
-Message the lead: "task.md complete. Task slug: {task-slug}"
+Message the lead: "task.md complete."
 Mark your task complete.
 
 ## Rules

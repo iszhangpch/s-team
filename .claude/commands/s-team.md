@@ -8,7 +8,24 @@ Agent teams must be enabled (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in setting
 
 Execute these stages in order for the task: $ARGUMENTS
 
-### Stage 0: Spawn Evaluator (immediately, stays online)
+### Stage 0: Setup — generate slug and create branch
+
+1. Generate a task slug from `$ARGUMENTS`:
+   - Format: `YYYYMMDD-short-keyword` (today's date + 2-4 word kebab-case summary)
+   - Example: "做一个用户登录功能" → `20260404-user-login`
+
+2. Create and switch to a feature branch:
+   - Try `feature/{task-slug}` first
+   - If that branch already exists locally or remotely, append `-a`, then `-b`, `-c`, etc. until a free name is found
+   - Run: `git checkout -b feature/{task-slug}`
+
+3. Confirm to the user:
+   ```
+   Task slug: {task-slug}
+   Branch: feature/{task-slug}
+   ```
+
+### Stage 0b: Spawn Evaluator (stays online)
 
 Spawn a teammate using the `evaluator` agent type.
 Prompt: "You are online for the full pipeline. Wait for messages from Clarifier, Planner, and Generator."
@@ -16,10 +33,9 @@ Prompt: "You are online for the full pipeline. Wait for messages from Clarifier,
 ### Stage 1: Clarifier
 
 Spawn a teammate using the `clarifier` agent type.
-Prompt: "The user wants to build: $ARGUMENTS. Follow your process."
+Prompt: "The user wants to build: $ARGUMENTS. Task slug: {task-slug}. Follow your process."
 
-Wait for Clarifier to message you "spec.md complete. Task slug: {task-slug}".
-Record the task slug — you will pass it to Planner and Generator.
+Wait for Clarifier to message you "spec.md complete."
 
 Show review node to the user:
 ```

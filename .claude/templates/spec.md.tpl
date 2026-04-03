@@ -1,5 +1,7 @@
 # Spec: <feature name>
 
+> No technical decisions in this document — no frameworks, file paths, module names, or architecture.
+
 ## Goal
 <one paragraph: what problem we're solving, for whom, and why>
 
@@ -32,8 +34,8 @@
 <how we know this feature is working correctly — from the user's perspective>
 - <criterion>
 
-## Open questions
-<must be empty before handoff to Planner>
-
 ## Chosen approach
 <which product-level approach was selected and why — no technical decisions>
+
+## Open questions
+<must be empty before handoff to Planner>

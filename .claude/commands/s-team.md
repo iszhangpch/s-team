@@ -3,7 +3,6 @@ You are the team lead for a structured coding pipeline. Your job is to coordinat
 ## Prerequisites
 
 Agent teams must be enabled (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings.json).
-Teammate display: tmux split-pane mode.
 
 ## Pipeline
 
@@ -12,25 +11,20 @@ Execute these stages in order for the task: $ARGUMENTS
 ### Stage 0: Spawn Evaluator (immediately, stays online)
 
 Spawn a teammate using the `evaluator` agent type.
-Prompt: "You are online for the full pipeline. Wait for messages from Planner and Generator."
-
-Write to `.steam/status`:
-```
-Stage: clarifying
-Current: clarifier
-Updated: <timestamp>
-```
+Prompt: "You are online for the full pipeline. Wait for messages from Clarifier, Planner, and Generator."
 
 ### Stage 1: Clarifier
 
 Spawn a teammate using the `clarifier` agent type.
-Prompt: "The user wants to build: $ARGUMENTS. Follow your brainstorming protocol."
+Prompt: "The user wants to build: $ARGUMENTS. Follow your process."
 
-Wait for Clarifier to message you "spec.md complete" or for `.steam/spec.md` to appear.
+Wait for Clarifier to message you "spec.md complete. Task slug: {task-slug}".
+Record the task slug — you will pass it to Planner and Generator.
 
 Show review node to the user:
 ```
-.steam/spec.md is ready. Review it in your editor.
+Spec ready: .steam/{task-slug}/draft/draft-spec-v{N}.md
+Review file: .steam/{task-slug}/review/review-spec-v{N}.md
 Press Enter to continue to planning, or type EDIT to pause here.
 ```
 
@@ -38,16 +32,15 @@ Wait for user input before proceeding.
 
 ### Stage 2: Planner
 
-Update `.steam/status` to `Stage: planning / Current: planner`.
-
 Spawn a teammate using the `planner` agent type.
-Prompt: ".steam/spec.md is ready. Read it, explore the codebase, draft .steam/task.md, and debate it with the Evaluator teammate before finalizing."
+Prompt: "Task slug: {task-slug}. The approved spec is ready. Follow your process."
 
-Wait for Planner to message you "task.md complete" or for `.steam/task.md` to appear.
+Wait for Planner to message you "task.md complete. Task slug: {task-slug}".
 
 Show review node:
 ```
-.steam/task.md is ready. Review it in your editor.
+Task plan ready: .steam/{task-slug}/draft/draft-task-v{N}.md
+Review file: .steam/{task-slug}/review/review-task-v{N}.md
 Press Enter to continue to implementation, or type EDIT to pause here.
 ```
 
@@ -55,28 +48,26 @@ Wait for user input before proceeding.
 
 ### Stage 3: Generator
 
-Update `.steam/status` to `Stage: generating / Current: generator`.
-
 Spawn a teammate using the `generator` agent type.
-Prompt: ".steam/task.md is ready. Implement each task using TDD. Message the Evaluator before starting each task."
+Prompt: "Task slug: {task-slug}. The approved task plan is ready. Follow your process."
 
-Monitor progress. When Generator marks all tasks complete:
-
-Update `.steam/status` to `Stage: done / Current: -`.
+Wait for Generator to message you "Implementation complete."
 
 Show review node:
 ```
 Implementation complete.
+Review file: .steam/{task-slug}/review/review-code-v{N}.md
 Press Enter to finish, or type REVIEW to inspect diffs.
 ```
 
 ## Resume
 
-If asked to resume from a stage, skip earlier stages and spawn only the Evaluator (if not running) and the requested stage's teammate.
+If asked to resume from a stage, skip earlier stages and spawn only the Evaluator (if not running) and the requested stage's teammate. Pass the task slug explicitly.
 
 ## Rules
 
-- Never skip the Evaluator spawn — it must be online before Planner or Generator starts.
+- Never skip the Evaluator spawn — it must be online before any other teammate starts.
 - Never advance to the next stage without the user confirming the review node.
+- Never advance if the review file for the current stage does not exist — a missing review means the review was skipped, which is not allowed.
 - If Evaluator escalates ("ESCALATION: ..."), pause the pipeline and surface the issue to the user before continuing.
 - If a teammate gets stuck or stops unexpectedly, tell the user and ask whether to respawn or abort.

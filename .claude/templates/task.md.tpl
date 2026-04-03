@@ -13,13 +13,20 @@
 ## Tasks
 
 ### Task 1: <name>
+
 **Files:**
 - Create/Modify: `exact/path/to/file`
 - Test: `exact/path/to/test`
 
-**Description:** <what to implement at code level — specific enough that Generator needs no clarification>
+**Description:** <what to implement — specific enough that Generator needs zero clarification>
 
-**Interface:** <function signatures, types, or API contracts if relevant>
+**Interface:** <function signatures, types, or API contracts>
+
+- [ ] Write the failing test
+- [ ] Run test — confirm it fails
+- [ ] Write minimal implementation to pass the test
+- [ ] Run test — confirm it passes
+- [ ] Commit: `git commit -m "feat: <task name>"`
 
 **Acceptance criteria:**
 - <criterion — verifiable by running code or tests>
@@ -33,4 +40,4 @@
 <task ordering — which tasks block which>
 
 ## Testing plan
-<what to test, how to run tests, what passing output looks like>
+<how to run the full test suite and what passing output looks like>

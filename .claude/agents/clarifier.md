@@ -30,7 +30,7 @@ Your questions and output cover:
 2. Ask clarifying questions one at a time. Cover: who is the user, what is the goal, what are the key features, what are the business rules and domain constraints, what does success look like.
 3. When you have enough context, propose 2–3 product-level approaches if there are meaningful options. Ask which they prefer.
 4. Draft spec.md section by section using `.claude/templates/spec.md.tpl`. After each section, ask: "Does this look right?"
-5. When all sections are confirmed and open questions are empty, write the final spec to `.s-team/spec.md`.
+5. When all sections are confirmed and open questions are empty, write the final spec to `.steam/spec.md`.
 6. Send a message to the lead: "spec.md complete."
 7. Mark your task complete.
 
@@ -42,4 +42,4 @@ Your questions and output cover:
 
 ## Output
 
-Write to: `.s-team/spec.md`
+Write to: `.steam/spec.md`

@@ -14,7 +14,7 @@ Execute these stages in order for the task: $ARGUMENTS
 Spawn a teammate using the `evaluator` agent type.
 Prompt: "You are online for the full pipeline. Wait for messages from Planner and Generator."
 
-Write to `.s-team/status`:
+Write to `.steam/status`:
 ```
 Stage: clarifying
 Current: clarifier
@@ -26,11 +26,11 @@ Updated: <timestamp>
 Spawn a teammate using the `clarifier` agent type.
 Prompt: "The user wants to build: $ARGUMENTS. Follow your brainstorming protocol."
 
-Wait for Clarifier to message you "spec.md complete" or for `.s-team/spec.md` to appear.
+Wait for Clarifier to message you "spec.md complete" or for `.steam/spec.md` to appear.
 
 Show review node to the user:
 ```
-.s-team/spec.md is ready. Review it in your editor.
+.steam/spec.md is ready. Review it in your editor.
 Press Enter to continue to planning, or type EDIT to pause here.
 ```
 
@@ -38,16 +38,16 @@ Wait for user input before proceeding.
 
 ### Stage 2: Planner
 
-Update `.s-team/status` to `Stage: planning / Current: planner`.
+Update `.steam/status` to `Stage: planning / Current: planner`.
 
 Spawn a teammate using the `planner` agent type.
-Prompt: ".s-team/spec.md is ready. Read it, explore the codebase, draft .s-team/task.md, and debate it with the Evaluator teammate before finalizing."
+Prompt: ".steam/spec.md is ready. Read it, explore the codebase, draft .steam/task.md, and debate it with the Evaluator teammate before finalizing."
 
-Wait for Planner to message you "task.md complete" or for `.s-team/task.md` to appear.
+Wait for Planner to message you "task.md complete" or for `.steam/task.md` to appear.
 
 Show review node:
 ```
-.s-team/task.md is ready. Review it in your editor.
+.steam/task.md is ready. Review it in your editor.
 Press Enter to continue to implementation, or type EDIT to pause here.
 ```
 
@@ -55,14 +55,14 @@ Wait for user input before proceeding.
 
 ### Stage 3: Generator
 
-Update `.s-team/status` to `Stage: generating / Current: generator`.
+Update `.steam/status` to `Stage: generating / Current: generator`.
 
 Spawn a teammate using the `generator` agent type.
-Prompt: ".s-team/task.md is ready. Implement each task using TDD. Message the Evaluator before starting each task."
+Prompt: ".steam/task.md is ready. Implement each task using TDD. Message the Evaluator before starting each task."
 
 Monitor progress. When Generator marks all tasks complete:
 
-Update `.s-team/status` to `Stage: done / Current: -`.
+Update `.steam/status` to `Stage: done / Current: -`.
 
 Show review node:
 ```

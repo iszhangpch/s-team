@@ -4,8 +4,7 @@
 #   ./s-team "<task description>"
 #   ./s-team resume --from <clarifier|planner|generator>
 #
-# Requires: claude CLI, tmux (for split-pane teammate display)
-# Claude Code handles all tmux pane management via agent teams.
+# Requires: claude CLI, tmux
 
 set -euo pipefail
 
@@ -25,22 +24,16 @@ if ! command -v claude &>/dev/null; then
   exit 1
 fi
 
-# Claude Code's split-pane mode requires running inside a tmux session.
-# If not already in tmux, create one. In iTerm2, use tmux -CC for native integration.
+# Agent teams requires a tmux session for split-pane display.
 if [[ -z "${TMUX:-}" ]]; then
   if ! command -v tmux &>/dev/null; then
-    echo "Error: tmux is required for split-pane mode. Install: brew install tmux"
+    echo "Error: tmux is required. Install: brew install tmux"
     exit 1
   fi
   SESSION="s-team-$$"
-  ARGS="$(printf '%q ' "$@")"
   SCRIPT="$(realpath "$0")"
-  if [[ "${TERM_PROGRAM:-}" == "iTerm.app" ]]; then
-    # iTerm2: use tmux -CC for native pane integration
-    exec tmux -CC new-session -s "$SESSION" "$SCRIPT $ARGS"
-  else
-    exec tmux new-session -s "$SESSION" "$SCRIPT $ARGS"
-  fi
+  ARGS="$(printf '%q ' "$@")"
+  exec tmux new-session -s "$SESSION" "$SCRIPT $ARGS"
 fi
 
 if [[ "$1" == "resume" ]]; then
@@ -52,16 +45,14 @@ if [[ "$1" == "resume" ]]; then
     echo "Error: --from must be one of: clarifier, planner, generator"
     exit 1
   fi
-  exec claude --teammate-mode tmux "Resume the s-team pipeline from the ${STAGE} stage.
+  exec claude "Resume the s-team pipeline from the ${STAGE} stage.
 
 Existing files are in place — read them before spawning teammates:
-- spec.md (if Clarifier already completed)
-- task.md (if Planner already completed)
+- .steam/spec.md (if Clarifier already completed)
+- .steam/task.md (if Planner already completed)
 
 Spawn Evaluator first if not already running, then spawn the ${STAGE} teammate."
 else
   TASK="$1"
-  exec claude --teammate-mode tmux "Start the s-team coding pipeline for this task: ${TASK}
-
-Run /s-team with the task description to begin."
+  exec claude "/s-team ${TASK}"
 fi

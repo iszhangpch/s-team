@@ -24,8 +24,29 @@ fi
 AGENTS_SRC="$SCRIPT_DIR/.claude/agents"
 AGENTS_DST="$TARGET/.claude/agents"
 COMMANDS_DST="$TARGET/.claude/commands"
+SETTINGS_FILE="$TARGET/.claude/settings.json"
 
 mkdir -p "$AGENTS_DST" "$COMMANDS_DST"
+
+# Enable agent teams in target project settings
+if [[ -f "$SETTINGS_FILE" ]]; then
+  if python3 -c "import json,sys; d=json.load(open('$SETTINGS_FILE')); sys.exit(0 if d.get('env',{}).get('CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS')=='1' else 1)" 2>/dev/null; then
+    echo "  [skip] agent teams already enabled in settings.json"
+  else
+    python3 -c "
+import json
+with open('$SETTINGS_FILE') as f:
+    d = json.load(f)
+d.setdefault('env', {})['CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS'] = '1'
+with open('$SETTINGS_FILE', 'w') as f:
+    json.dump(d, f, indent=2)
+print('  [ok]   enabled CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS in settings.json')
+"
+  fi
+else
+  echo '{"env": {"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"}}' | python3 -m json.tool > "$SETTINGS_FILE"
+  echo "  [ok]   created settings.json with agent teams enabled"
+fi
 
 # Copy agents
 for f in "$AGENTS_SRC"/*.md; do

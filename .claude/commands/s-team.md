@@ -19,12 +19,6 @@ Execute these stages in order for the task: $ARGUMENTS
    - If that branch already exists locally or remotely, append `-a`, then `-b`, `-c`, etc. until a free name is found
    - Run: `git checkout -b feature/{task-slug}`
 
-3. Confirm to the user:
-   ```
-   Task slug: {task-slug}
-   Branch: feature/{task-slug}
-   ```
-
 ### Stage 0b: Spawn Evaluator (stays online)
 
 Spawn a teammate using the `evaluator` agent type.

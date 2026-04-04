@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# s-team — launch Claude Code with agent teams and tmux split-pane support
-# Usage: ./s-team
+# steam — launch Claude Code with agent teams and tmux split-pane support
+# Usage: ./steam
 
 set -euo pipefail
 
@@ -9,13 +9,31 @@ if ! command -v claude &>/dev/null; then
   exit 1
 fi
 
+if ! command -v tmux &>/dev/null; then
+  echo "Error: tmux is required. Install: brew install tmux"
+  exit 1
+fi
+
+# Ensure CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS is enabled in Claude settings.
+SETTINGS="$HOME/.claude/settings.json"
+if [[ -f "$SETTINGS" ]]; then
+  if ! python3 -c "import json,sys; d=json.load(open('$SETTINGS')); sys.exit(0 if d.get('env',{}).get('CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS')=='1' else 1)" 2>/dev/null; then
+    python3 -c "
+import json
+with open('$SETTINGS') as f:
+    d = json.load(f)
+d.setdefault('env', {})['CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS'] = '1'
+with open('$SETTINGS', 'w') as f:
+    json.dump(d, f, indent=2)
+"
+  fi
+else
+  echo '{"env": {"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"}}' | python3 -m json.tool > "$SETTINGS"
+fi
+
 # Agent teams requires a tmux session for split-pane display.
 if [[ -z "${TMUX:-}" ]]; then
-  if ! command -v tmux &>/dev/null; then
-    echo "Error: tmux is required. Install: brew install tmux"
-    exit 1
-  fi
-  SESSION="s-team-$$"
+  SESSION="steam-$$"
   SCRIPT="$(realpath "$0")"
   exec tmux new-session -s "$SESSION" "$SCRIPT"
 fi

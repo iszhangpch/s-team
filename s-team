@@ -1,23 +1,8 @@
 #!/usr/bin/env bash
-# s-team — coding team entry point
-# Usage:
-#   ./s-team "<task description>"
-#   ./s-team resume --from <clarifier|planner|generator>
-#
-# Requires: claude CLI, tmux
+# s-team — launch Claude Code with agent teams and tmux split-pane support
+# Usage: ./s-team
 
 set -euo pipefail
-
-usage() {
-  echo "Usage:"
-  echo "  ./s-team \"<task description>\""
-  echo "  ./s-team resume --from <clarifier|planner|generator>"
-  exit 1
-}
-
-if [[ $# -eq 0 ]]; then
-  usage
-fi
 
 if ! command -v claude &>/dev/null; then
   echo "Error: claude CLI is required. Install Claude Code."
@@ -32,27 +17,7 @@ if [[ -z "${TMUX:-}" ]]; then
   fi
   SESSION="s-team-$$"
   SCRIPT="$(realpath "$0")"
-  ARGS="$(printf '%q ' "$@")"
-  exec tmux new-session -s "$SESSION" "$SCRIPT $ARGS"
+  exec tmux new-session -s "$SESSION" "$SCRIPT"
 fi
 
-if [[ "$1" == "resume" ]]; then
-  if [[ "${2:-}" != "--from" ]] || [[ -z "${3:-}" ]]; then
-    usage
-  fi
-  STAGE="$3"
-  if [[ "$STAGE" != "clarifier" && "$STAGE" != "planner" && "$STAGE" != "generator" ]]; then
-    echo "Error: --from must be one of: clarifier, planner, generator"
-    exit 1
-  fi
-  exec claude "Resume the s-team pipeline from the ${STAGE} stage.
-
-Existing files are in place — read them before spawning teammates:
-- .steam/spec.md (if Clarifier already completed)
-- .steam/task.md (if Planner already completed)
-
-Spawn Evaluator first if not already running, then spawn the ${STAGE} teammate."
-else
-  TASK="$1"
-  exec claude "/steam ${TASK}"
-fi
+exec claude

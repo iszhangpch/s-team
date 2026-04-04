@@ -60,13 +60,13 @@ for f in "$AGENTS_SRC"/*.md; do
 done
 
 # Copy command
-CMD_SRC="$SCRIPT_DIR/.claude/commands/s-team.md"
-CMD_DST="$COMMANDS_DST/s-team.md"
+CMD_SRC="$SCRIPT_DIR/.claude/commands/steam.md"
+CMD_DST="$COMMANDS_DST/steam.md"
 if [[ -f "$CMD_DST" ]]; then
-  echo "  [skip] commands/s-team.md already exists (use --force to overwrite)"
+  echo "  [skip] commands/steam.md already exists (use --force to overwrite)"
 else
   cp "$CMD_SRC" "$CMD_DST"
-  echo "  [ok]   commands/s-team.md"
+  echo "  [ok]   commands/steam.md"
 fi
 
 # Handle --force flag
@@ -77,8 +77,8 @@ if [[ "${2:-}" == "--force" ]]; then
     echo "  [force] agents/$name"
   done
   cp "$CMD_SRC" "$CMD_DST"
-  echo "  [force] commands/s-team.md"
+  echo "  [force] commands/steam.md"
 fi
 
 echo ""
-echo "Done. In your project, run: /s-team <task description>"
+echo "Done. In your project, run: /steam <task description>"

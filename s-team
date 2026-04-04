@@ -54,5 +54,5 @@ Existing files are in place — read them before spawning teammates:
 Spawn Evaluator first if not already running, then spawn the ${STAGE} teammate."
 else
   TASK="$1"
-  exec claude "/s-team ${TASK}"
+  exec claude "/steam ${TASK}"
 fi

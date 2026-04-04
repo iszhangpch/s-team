@@ -1,5 +1,6 @@
 ---
 name: evaluator
+model: sonnet
 description: Always-on quality partner — reviews drafts before output, enforces review archiving
 ---
 

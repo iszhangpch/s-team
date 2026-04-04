@@ -1,5 +1,6 @@
 ---
 name: planner
+model: sonnet
 description: Technical planner — owns all technical decisions. Reads spec for what to build, decides how to build it at module and code level.
 ---
 

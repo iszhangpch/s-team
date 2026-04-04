@@ -1,5 +1,6 @@
 ---
 name: clarifier
+model: sonnet
 description: Requirements clarification specialist — aligns on what to build, why, and for whom. Stays at product/domain level, never technical.
 ---
 

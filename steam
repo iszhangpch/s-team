@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# steam — launch Claude Code with agent teams and tmux split-pane support
-# Usage: ./steam
+# steam — launch Claude Code with agent teams in a target project
+# Usage: ./steam [project-path]
+#        Defaults to current directory if no path given.
 
 set -euo pipefail
 
@@ -14,28 +15,29 @@ if ! command -v tmux &>/dev/null; then
   exit 1
 fi
 
-# Ensure CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS is enabled in Claude settings.
-SETTINGS="$HOME/.claude/settings.json"
-if [[ -f "$SETTINGS" ]]; then
-  if ! python3 -c "import json,sys; d=json.load(open('$SETTINGS')); sys.exit(0 if d.get('env',{}).get('CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS')=='1' else 1)" 2>/dev/null; then
-    python3 -c "
-import json
-with open('$SETTINGS') as f:
-    d = json.load(f)
-d.setdefault('env', {})['CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS'] = '1'
-with open('$SETTINGS', 'w') as f:
-    json.dump(d, f, indent=2)
-"
-  fi
-else
-  echo '{"env": {"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"}}' | python3 -m json.tool > "$SETTINGS"
+PROJECT="${1:-$PWD}"
+
+if [[ ! -d "$PROJECT" ]]; then
+  echo "Error: project directory '$PROJECT' does not exist."
+  exit 1
+fi
+
+PROJECT="$(cd "$PROJECT" && pwd)"
+
+# Verify agent teams is enabled in the project settings.
+SETTINGS="$PROJECT/.claude/settings.json"
+if [[ ! -f "$SETTINGS" ]] || ! python3 -c "import json,sys; d=json.load(open('$SETTINGS')); sys.exit(0 if d.get('env',{}).get('CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS')=='1' else 1)" 2>/dev/null; then
+  echo "Error: agent teams not enabled in $SETTINGS"
+  echo "Run install.sh first: ./install.sh $PROJECT"
+  exit 1
 fi
 
 # Agent teams requires a tmux session for split-pane display.
 if [[ -z "${TMUX:-}" ]]; then
   SESSION="steam-$$"
   SCRIPT="$(realpath "$0")"
-  exec tmux new-session -s "$SESSION" "$SCRIPT"
+  exec tmux new-session -s "$SESSION" "$SCRIPT" "$PROJECT"
 fi
 
+cd "$PROJECT"
 exec claude

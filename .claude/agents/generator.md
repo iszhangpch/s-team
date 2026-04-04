@@ -1,6 +1,5 @@
 ---
 name: generator
-model: sonnet
 description: Code generator — implements task.md via TDD, debates approach with Evaluator before each task
 ---
 

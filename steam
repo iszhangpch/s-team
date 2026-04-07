@@ -40,16 +40,4 @@ if [[ -z "${TMUX:-}" ]]; then
 fi
 
 cd "$PROJECT"
-
-# Agent teams spawns sub-agents via the absolute path of the claude binary.
-# Ensure /opt/homebrew/bin/claude points to a shim that runs mc --code.
-SHIM="/opt/homebrew/bin/claude-mc-shim"
-if [[ ! -f "$SHIM" ]] || ! grep -q 'exec mc --code' "$SHIM" 2>/dev/null; then
-  echo "Installing claude shim for mc --code..."
-  printf '#!/usr/bin/env bash\nexec mc --code "$@"\n' | sudo tee "$SHIM" > /dev/null
-  sudo chmod +x "$SHIM"
-  sudo ln -sf "$SHIM" /opt/homebrew/bin/claude
-  echo "  [ok] /opt/homebrew/bin/claude -> mc --code"
-fi
-
 exec mc --code

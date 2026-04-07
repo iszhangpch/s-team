@@ -10,11 +10,6 @@ if ! command -v mc &>/dev/null; then
   exit 1
 fi
 
-if ! command -v tmux &>/dev/null; then
-  echo "Error: tmux is required. Install: brew install tmux"
-  exit 1
-fi
-
 PROJECT="${1:-$PWD}"
 
 if [[ ! -d "$PROJECT" ]]; then
@@ -32,12 +27,5 @@ if [[ ! -f "$SETTINGS" ]] || ! python3 -c "import json,sys; d=json.load(open('$S
   exit 1
 fi
 
-# Agent teams requires a tmux session for split-pane display.
-if [[ -z "${TMUX:-}" ]]; then
-  SESSION="steam-$$"
-  SCRIPT="$(realpath "$0")"
-  exec tmux new-session -s "$SESSION" "$SCRIPT" "$PROJECT"
-fi
-
 cd "$PROJECT"
-exec mc --code
+exec mc --code --teammate-mode in-process

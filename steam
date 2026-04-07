@@ -40,4 +40,16 @@ if [[ -z "${TMUX:-}" ]]; then
 fi
 
 cd "$PROJECT"
+
+# Agent teams spawns sub-agents using the claude binary path from argv[0].
+# Inject a shim named "claude" into PATH so sub-agents run via mc --code instead.
+SHIM_DIR="$(mktemp -d)"
+trap 'rm -rf "$SHIM_DIR"' EXIT
+cat > "$SHIM_DIR/claude" <<'SHIM'
+#!/usr/bin/env bash
+exec mc --code "$@"
+SHIM
+chmod +x "$SHIM_DIR/claude"
+export PATH="$SHIM_DIR:$PATH"
+
 exec mc --code

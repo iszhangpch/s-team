@@ -5,8 +5,8 @@
 
 set -euo pipefail
 
-if ! command -v claude &>/dev/null; then
-  echo "Error: claude CLI is required. Install Claude Code."
+if ! command -v mt &>/dev/null; then
+  echo "Error: mt CLI is required. Install Claude Code via mt."
   exit 1
 fi
 
@@ -40,4 +40,4 @@ if [[ -z "${TMUX:-}" ]]; then
 fi
 
 cd "$PROJECT"
-exec claude
+exec mt --code

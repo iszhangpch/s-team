@@ -111,7 +111,7 @@ with open(settings_file) as f:
     d = json.load(f)
 
 hooks = d.setdefault('hooks', {})
-tc_hooks = hooks.setdefault('TaskComplete', [])
+tc_hooks = hooks.setdefault('TaskCompleted', [])
 
 already = any(
     hook.get('command') == hook_cmd
@@ -120,12 +120,12 @@ already = any(
 )
 
 if already:
-    print('  [skip] TaskComplete hook already registered in settings.json')
+    print('  [skip] TaskCompleted hook already registered in settings.json')
 else:
     tc_hooks.append({'hooks': [{'type': 'command', 'command': hook_cmd}]})
     with open(settings_file, 'w') as f:
         json.dump(d, f, indent=2)
-    print('  [ok]   registered TaskComplete hook in settings.json')
+    print('  [ok]   registered TaskCompleted hook in settings.json')
 "
 
 # ── Copy s-team agents ─────────────────────────────────────────────────────────
@@ -187,21 +187,6 @@ if [[ -d "$SUPERPOWERS_SRC/skills" ]]; then
     else
       cp -r "$skill_dir" "$dst"
       echo "  [ok]   skills/$name"
-    fi
-  done
-fi
-
-# ── Copy superpowers agents ────────────────────────────────────────────────────
-
-if [[ -d "$SUPERPOWERS_SRC/agents" ]]; then
-  for f in "$SUPERPOWERS_SRC/agents"/*.md; do
-    [[ -f "$f" ]] || continue
-    name="$(basename "$f")"
-    if [[ -f "$AGENTS_DST/$name" ]] && [[ "$FORCE" != "--force" ]]; then
-      echo "  [skip] agents/$name (superpowers) already exists (use --force to overwrite)"
-    else
-      cp "$f" "$AGENTS_DST/$name"
-      echo "  [ok]   agents/$name (superpowers)"
     fi
   done
 fi

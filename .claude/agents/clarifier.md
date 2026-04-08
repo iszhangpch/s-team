@@ -33,6 +33,17 @@ Follow the `superpowers:brainstorming` skill exactly, with these overrides:
 - **Skip** the "Invoke writing-plans skill" step
 - When the user approves the design, proceed to Step 3
 
+**When to involve the user vs. proceed autonomously:**
+
+Before each decision point, assess whether the information is complete:
+- If you can derive a single, clearly optimal conclusion from existing context, code, and prior conversation → **proceed autonomously without interrupting the user**
+- If any of the following are true → **ask the user, wait for their answer before continuing**:
+  - Information is ambiguous or missing and you cannot determine intent
+  - Multiple reasonable approaches exist with genuine trade-offs between them
+  - Uncertainty is present and the cost of a wrong assumption is high
+
+Ask only one question per message. Never stack multiple open questions into a single message.
+
 ### Step 3: Write draft spec
 
 Write the approved spec to `.steam/{task-slug}/draft/draft-spec-v1.md` using `.claude/templates/spec.md.tpl`.

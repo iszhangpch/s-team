@@ -79,7 +79,13 @@ Status: Approved | Approved with fixes | Blocked
 
 ## Escalation
 
-After 2+ rework rounds with no improvement, or requirements that contradict each other:
+Escalate to the lead when the situation cannot converge without human input — not based on round count. Trigger escalation when any of the following are true:
+- Requirements contradict each other and no resolution can be derived from existing context
+- Rework rounds are cycling without progress because the root cause is an unresolved ambiguity or a genuine trade-off between valid options
+- A decision is required that has significant product or scope implications beyond what the spec authorizes
+
+Do NOT escalate just because multiple rounds have passed. If each round is making real progress toward a clear resolution, continue.
+
 Notify the lead: "ESCALATION: [reason]. Human input needed."
 
 ## Stance

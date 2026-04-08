@@ -1,41 +1,41 @@
-# Spec: <feature name>
+# 规格：<功能名称>
 
-> No technical decisions in this document — no frameworks, file paths, module names, or architecture.
+> 本文档不包含任何技术决策——不涉及框架、文件路径、模块名称或架构。
 
-## Goal
-<one paragraph: what problem we're solving, for whom, and why>
+## 目标
+<一段话：我们在解决什么问题、为谁解决、为什么现在解决>
 
-## Users
-<who uses this feature and in what context>
+## 用户
+<谁会使用这个功能，在什么场景下使用>
 
-## Scope
+## 范围
 
-### In scope
-- <user-facing behavior or business rule>
+### 范围内
+- <面向用户的行为或业务规则>
 
-### Out of scope
-- <explicitly excluded behavior>
+### 范围外
+- <明确排除的行为>
 
-## Domain knowledge
-<business rules, terminology, and domain constraints that Planner needs to understand>
-- <rule or constraint>
+## 领域知识
+<Planner 需要理解的业务规则、术语和领域约束>
+- <规则或约束>
 
-## Requirements
+## 需求
 
-### Functional
-<what the system must do, described in user/product terms>
-- <requirement>
+### 功能性需求
+<系统必须做什么，用用户/产品术语描述>
+- <需求>
 
-### Non-functional
-<product-level constraints — stated in user terms, not technical terms>
-- <e.g. "login must complete within 2 seconds on a standard connection">
+### 非功能性需求
+<产品层面的约束——用用户术语表述，不用技术术语>
+- <例如："在标准网络下，登录必须在 2 秒内完成">
 
-## Acceptance criteria
-<how we know this feature is working correctly — from the user's perspective>
-- <criterion>
+## 验收标准
+<从用户角度判断功能正常工作的标准>
+- <标准>
 
-## Chosen approach
-<which product-level approach was selected and why — no technical decisions>
+## 选定方案
+<选择了哪种产品层面的方案，以及原因——不包含技术决策>
 
-## Open questions
-<must be empty before handoff to Planner>
+## 开放问题
+<交接给 Planner 之前必须为空>

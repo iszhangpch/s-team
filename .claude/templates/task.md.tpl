@@ -1,43 +1,43 @@
-# Task Plan: <feature name>
+# 任务计划：<功能名称>
 
-## Technical approach
-<the architectural decisions Planner made and why — tech stack choices, patterns used, key trade-offs>
+## 技术方案
+<Planner 做出的架构决策及原因——技术栈选择、使用的模式、关键权衡>
 
-## Module design
-<what each new or significantly modified module/component is responsible for>
-- `module/path`: <single responsibility>
+## 模块设计
+<每个新建或重要修改的模块/组件负责什么>
+- `模块/路径`: <单一职责>
 
-## Codebase context
-<relevant existing patterns, conventions, and code this feature builds on>
+## 代码库上下文
+<该功能基于的相关现有模式、规范和代码>
 
-## Tasks
+## 任务
 
-### Task 1: <name>
+### 任务 1：<名称>
 
-**Files:**
-- Create/Modify: `exact/path/to/file`
-- Test: `exact/path/to/test`
+**文件：**
+- 创建/修改：`精确/路径/到/文件`
+- 测试：`精确/路径/到/测试`
 
-**Description:** <what to implement — specific enough that Generator needs zero clarification>
+**描述：** <要实现什么——具体到 Generator 无需任何澄清>
 
-**Interface:** <function signatures, types, or API contracts>
+**接口：** <函数签名、类型或 API 契约>
 
-- [ ] Write the failing test
-- [ ] Run test — confirm it fails
-- [ ] Write minimal implementation to pass the test
-- [ ] Run test — confirm it passes
-- [ ] Commit: `git commit -m "feat: <task name>"`
+- [ ] 编写失败的测试
+- [ ] 运行测试——确认它失败
+- [ ] 编写最小实现使测试通过
+- [ ] 运行测试——确认它通过
+- [ ] 提交：`git commit -m "feat: <任务名称>"`
 
-**Acceptance criteria:**
-- <criterion — verifiable by running code or tests>
+**验收标准：**
+- <标准——可通过运行代码或测试来验证>
 
 ---
 
-### Task 2: <name>
+### 任务 2：<名称>
 ...
 
-## Dependencies
-<task ordering — which tasks block which>
+## 依赖关系
+<任务顺序——哪些任务阻塞哪些任务>
 
-## Testing plan
-<how to run the full test suite and what passing output looks like>
+## 测试计划
+<如何运行完整测试套件以及通过时的输出样式>

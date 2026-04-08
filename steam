@@ -28,4 +28,4 @@ if [[ ! -f "$SETTINGS" ]] || ! python3 -c "import json,sys; d=json.load(open('$S
 fi
 
 cd "$PROJECT"
-exec mc --code --teammate-mode in-process
+exec mc --code --teammate-mode tmux

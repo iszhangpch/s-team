@@ -14,7 +14,7 @@ Execute these stages in order for the task: $ARGUMENTS
 
 ### Stage 0: Setup — create team, generate slug, create branch
 
-1. Use `TeamCreate` to create a team named `steam-pipeline`.
+1. Use `TeamCreate` to create a team named `taro-pipeline`.
 
 2. Generate a task slug from `$ARGUMENTS`:
    - Format: `YYYYMMDD-short-keyword` (today's date + 2-4 word kebab-case summary)
@@ -27,20 +27,20 @@ Execute these stages in order for the task: $ARGUMENTS
 
 ### Stage 0b: Spawn Evaluator (stays online)
 
-Use `Agent` tool with `team_name: steam-pipeline`, `subagent_type: evaluator`, `name: evaluator`.
+Use `Agent` tool with `team_name: taro-pipeline`, `subagent_type: evaluator`, `name: evaluator`.
 Prompt: "You are online for the full pipeline. Wait for messages from Clarifier, Planner, and Generator."
 
 ### Stage 1: Clarifier
 
-Use `Agent` tool with `team_name: steam-pipeline`, `subagent_type: clarifier`, `name: clarifier`.
+Use `Agent` tool with `team_name: taro-pipeline`, `subagent_type: clarifier`, `name: clarifier`.
 Prompt: "The user wants to build: $ARGUMENTS. Task slug: {task-slug}. Follow your process."
 
 Wait for Clarifier to send you a message "spec.md complete."
 
 Show review node to the user:
 ```
-Spec ready: .steam/{task-slug}/draft/draft-spec-v{N}.md
-Review file: .steam/{task-slug}/review/review-spec-v{N}.md
+Spec ready: .taro/{task-slug}/draft/draft-spec-v{N}.md
+Review file: .taro/{task-slug}/review/review-spec-v{N}.md
 Press Enter to continue to planning, or type EDIT to pause here.
 ```
 
@@ -48,15 +48,15 @@ Wait for user input before proceeding.
 
 ### Stage 2: Planner
 
-Use `Agent` tool with `team_name: steam-pipeline`, `subagent_type: planner`, `name: planner`.
+Use `Agent` tool with `team_name: taro-pipeline`, `subagent_type: planner`, `name: planner`.
 Prompt: "Task slug: {task-slug}. The approved spec is ready. Follow your process."
 
 Wait for Planner to send you a message "task.md complete."
 
 Show review node:
 ```
-Task plan ready: .steam/{task-slug}/draft/draft-task-v{N}.md
-Review file: .steam/{task-slug}/review/review-task-v{N}.md
+Task plan ready: .taro/{task-slug}/draft/draft-task-v{N}.md
+Review file: .taro/{task-slug}/review/review-task-v{N}.md
 Press Enter to continue to implementation, or type EDIT to pause here.
 ```
 
@@ -64,7 +64,7 @@ Wait for user input before proceeding.
 
 ### Stage 3: Generator
 
-Use `Agent` tool with `team_name: steam-pipeline`, `subagent_type: generator`, `name: generator`.
+Use `Agent` tool with `team_name: taro-pipeline`, `subagent_type: generator`, `name: generator`.
 Prompt: "Task slug: {task-slug}. The approved task plan is ready. Follow your process."
 
 Wait for Generator to send you a message "Implementation complete."
@@ -72,7 +72,7 @@ Wait for Generator to send you a message "Implementation complete."
 Show review node:
 ```
 Implementation complete.
-Review file: .steam/{task-slug}/review/review-code-v{N}.md
+Review file: .taro/{task-slug}/review/review-code-v{N}.md
 Press Enter to finish, or type REVIEW to inspect diffs.
 ```
 
@@ -83,7 +83,7 @@ If asked to resume from a stage, use `TeamCreate` to recreate the team, then spa
 ## Rules
 
 - ALWAYS use `TeamCreate` before spawning any teammate.
-- ALWAYS use `Agent` with `team_name: steam-pipeline` — never without it.
+- ALWAYS use `Agent` with `team_name: taro-pipeline` — never without it.
 - Never skip the Evaluator spawn — it must be online before any other teammate starts.
 - Never advance to the next stage without the user confirming the review node.
 - Never advance if the review file for the current stage does not exist — a missing review means the review was skipped, which is not allowed.

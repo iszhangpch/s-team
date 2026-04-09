@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 usage() {
   echo "Usage: $0 <target-project-path> [--force]"
   echo ""
-  echo "Installs s-team agents and command into the target project's .claude/ directory."
+  echo "Installs taro agents and command into the target project's .claude/ directory."
   exit 1
 }
 
@@ -74,10 +74,9 @@ HOOKS_SRC="$SCRIPT_DIR/.claude/hooks"
 HOOKS_DST="$TARGET/.claude/hooks"
 TEMPLATES_SRC="$SCRIPT_DIR/.claude/templates"
 TEMPLATES_DST="$TARGET/.claude/templates"
-SKILLS_DST="$TARGET/.claude/skills"
 SETTINGS_FILE="$TARGET/.claude/settings.json"
 
-mkdir -p "$AGENTS_DST" "$COMMANDS_DST" "$HOOKS_DST" "$TEMPLATES_DST" "$SKILLS_DST"
+mkdir -p "$AGENTS_DST" "$COMMANDS_DST" "$HOOKS_DST" "$TEMPLATES_DST"
 
 # ── Enable agent teams in target project settings ─────────────────────────────
 
@@ -128,7 +127,7 @@ else:
     print('  [ok]   registered TaskCompleted hook in settings.json')
 "
 
-# ── Copy s-team agents ─────────────────────────────────────────────────────────
+# ── Copy taro agents ─────────────────────────────────────────────────────────
 
 for f in "$AGENTS_SRC"/*.md; do
   name="$(basename "$f")"
@@ -140,18 +139,18 @@ for f in "$AGENTS_SRC"/*.md; do
   fi
 done
 
-# ── Copy steam command ─────────────────────────────────────────────────────────
+# ── Copy taro command ─────────────────────────────────────────────────────────
 
-CMD_SRC="$SCRIPT_DIR/.claude/commands/steam.md"
-CMD_DST="$COMMANDS_DST/steam.md"
+CMD_SRC="$SCRIPT_DIR/.claude/commands/taro.md"
+CMD_DST="$COMMANDS_DST/taro.md"
 if [[ -f "$CMD_DST" ]] && [[ "$FORCE" != "--force" ]]; then
-  echo "  [skip] commands/steam.md already exists (use --force to overwrite)"
+  echo "  [skip] commands/taro.md already exists (use --force to overwrite)"
 else
   cp "$CMD_SRC" "$CMD_DST"
-  echo "  [ok]   commands/steam.md"
+  echo "  [ok]   commands/taro.md"
 fi
 
-# ── Copy s-team hooks ──────────────────────────────────────────────────────────
+# ── Copy taro hooks ──────────────────────────────────────────────────────────
 
 for f in "$HOOKS_SRC"/*.sh; do
   name="$(basename "$f")"
@@ -164,7 +163,7 @@ for f in "$HOOKS_SRC"/*.sh; do
   fi
 done
 
-# ── Copy s-team templates ──────────────────────────────────────────────────────
+# ── Copy taro templates ──────────────────────────────────────────────────────
 
 for f in "$TEMPLATES_SRC"/*.tpl; do
   name="$(basename "$f")"
@@ -176,60 +175,6 @@ for f in "$TEMPLATES_SRC"/*.tpl; do
   fi
 done
 
-# ── Copy superpowers skills ────────────────────────────────────────────────────
-
-if [[ -d "$SUPERPOWERS_SRC/skills" ]]; then
-  for skill_dir in "$SUPERPOWERS_SRC/skills"/*/; do
-    name="$(basename "$skill_dir")"
-    dst="$SKILLS_DST/$name"
-    if [[ -d "$dst" ]] && [[ "$FORCE" != "--force" ]]; then
-      echo "  [skip] skills/$name already exists (use --force to overwrite)"
-    else
-      cp -r "$skill_dir" "$dst"
-      echo "  [ok]   skills/$name"
-    fi
-  done
-fi
-
-# ── Copy superpowers session-start hook ───────────────────────────────────────
-
-if [[ -f "$SUPERPOWERS_SRC/hooks/session-start" ]]; then
-  SS_DST="$HOOKS_DST/superpowers-session-start"
-  if [[ -f "$SS_DST" ]] && [[ "$FORCE" != "--force" ]]; then
-    echo "  [skip] hooks/superpowers-session-start already exists (use --force to overwrite)"
-  else
-    cp "$SUPERPOWERS_SRC/hooks/session-start" "$SS_DST"
-    chmod +x "$SS_DST"
-    echo "  [ok]   hooks/superpowers-session-start"
-  fi
-
-  # Register SessionStart hook in settings.json
-  python3 -c "
-import json
-settings_file = '$SETTINGS_FILE'
-hook_cmd = 'bash .claude/hooks/superpowers-session-start'
-
-with open(settings_file) as f:
-    d = json.load(f)
-
-hooks = d.setdefault('hooks', {})
-ss_hooks = hooks.setdefault('SessionStart', [])
-
-already = any(
-    hook.get('command') == hook_cmd
-    for entry in ss_hooks
-    for hook in entry.get('hooks', [])
-)
-
-if already:
-    print('  [skip] SessionStart hook already registered in settings.json')
-else:
-    ss_hooks.append({'hooks': [{'type': 'command', 'command': hook_cmd}]})
-    with open(settings_file, 'w') as f:
-        json.dump(d, f, indent=2)
-    print('  [ok]   registered SessionStart hook in settings.json')
-"
-fi
 
 echo ""
-echo "Done. In your project, run: /steam <task description>"
+echo "Done. In your project, run: /taro <task description>"

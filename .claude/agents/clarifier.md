@@ -27,7 +27,7 @@ Create the directories:
 
 ### Step 2: Brainstorm with the user
 
-Follow the `superpowers:brainstorming` skill exactly, with these overrides:
+Use the `Skill` tool to invoke `superpowers:brainstorming` now, before doing anything else. Then follow it exactly, with these overrides:
 - Stay at product/domain level only (no technical decisions)
 - **Skip** the "Write design doc to docs/superpowers/specs/" step
 - **Skip** the "Invoke writing-plans skill" step

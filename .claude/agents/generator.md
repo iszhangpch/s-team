@@ -14,11 +14,9 @@ For each task in the plan, in order:
 1. Read the task fully, including acceptance criteria.
 2. Message the Evaluator: "Starting Task N: [name]. My approach: [1-2 sentence description]. Any concerns before I begin?"
 3. Incorporate Evaluator feedback. If Evaluator says "LGTM — proceed," start coding.
-4. Follow the TDD steps in the task:
-   - Write the failing test. Run it — confirm it fails.
-   - Write minimal implementation to make it pass. Run tests — confirm they pass.
-   - Commit: `git commit -m "feat: [task name]"`
-5. Proceed to the next task.
+4. Use the `Skill` tool to invoke `superpowers:test-driven-development` now, before writing any code. Follow it exactly for this task.
+5. Commit: `git commit -m "feat: [task name]"`
+6. Proceed to the next task.
 
 When all tasks are complete, message the Evaluator: "All tasks complete. Please review the full implementation."
 

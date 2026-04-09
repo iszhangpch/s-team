@@ -26,12 +26,16 @@ The lead will tell you the task slug. Read:
 
 ### Step 2: Write draft task plan
 
-Make all technical decisions. Design the modules and interfaces needed to satisfy the spec.
+Use the `Skill` tool to invoke `superpowers:writing-plans` now, before writing anything. Follow it exactly, with these overrides:
+- Save the plan to `.taro/{task-slug}/draft/draft-task-v1.md` (not `docs/superpowers/plans/`)
+- Use `.claude/templates/task.md.tpl` as the document structure
+- Skip the "Execution Handoff" section at the end — Generator handles execution
 
-Write the draft to `.taro/{task-slug}/draft/draft-task-v1.md` using `.claude/templates/task.md.tpl`. Include:
+The plan must include:
 - Technical approach: architecture decisions and why
+- File structure: every file to create or modify, with responsibilities locked in before task decomposition
 - Module design: what each new/modified module is responsible for
-- One task per logical unit of work, with exact file paths, TDD steps, and acceptance criteria
+- One task per logical unit of work, with exact file paths, complete TDD steps (including full code), and verifiable acceptance criteria
 
 ### Step 3: Evaluator review loop
 

@@ -48,7 +48,7 @@ Ask only one question per message. Never stack multiple open questions into a si
 
 ### Step 3: Write draft spec
 
-Write the approved spec to `.taro/{task-slug}/draft/draft-spec-v1.md` using `.claude/templates/spec.md.tpl`.
+Write the approved spec to `.taro/{task-slug}/draft/draft-spec-v1.md` using `.claude/templates/spec.md.tpl`. Write all content in Chinese. System-to-system fields (file paths, status values, command names) remain in English.
 
 Then message the Evaluator: "Draft spec ready for review: `.taro/{task-slug}/draft/draft-spec-v1.md`"
 

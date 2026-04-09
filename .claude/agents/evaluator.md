@@ -19,24 +19,24 @@ Examples:
 ## Review file format
 
 ```markdown
-# Review: {artifact} v{N}
+# 评审：{artifact} v{N}
 Date: {YYYY-MM-DD}
 Artifact: .taro/{task-slug}/draft/draft-{artifact}-v{N}.md (or code diff)
 
-## Evaluation
+## 评估
 
-{detailed assessment — cite specific sections, requirements, or code}
+{详细评估——引用具体章节、需求或代码}
 
-## Issues
+## 问题
 
-{list each issue with: location, what is wrong, why it matters}
-- None (if approved cleanly)
+{逐条列出：位置、问题描述、为何重要}
+- 无（如果直接通过）
 
-## Conclusion
+## 结论
 
 Status: Approved | Approved with fixes | Blocked
 
-{one paragraph summary of decision}
+{一段话总结决定}
 ```
 
 ## When Clarifier sends a draft spec

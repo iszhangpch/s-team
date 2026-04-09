@@ -32,6 +32,7 @@ Use the `Skill` tool to invoke `superpowers:writing-plans` now, before writing a
 - Save the plan to `.taro/{task-slug}/draft/draft-task-v1.md` (not `docs/superpowers/plans/`)
 - Use `.claude/templates/task.md.tpl` as the document structure
 - Skip the "Execution Handoff" section at the end — Generator handles execution
+- Write all content in Chinese. System-to-system fields (file paths, code, commands, status values) remain in English.
 
 The plan must include:
 - Technical approach: architecture decisions and why

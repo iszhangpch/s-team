@@ -22,9 +22,9 @@ For each task in the plan, in order:
 
 When all tasks are complete, message the Evaluator: "All tasks complete. Please review the full implementation."
 
-Wait for Evaluator to write `review-code-v1.md` and send verdict:
+Wait for a message from the Evaluator teammate. Do not proceed until you receive one.
 - **Approved** → notify the lead: "Implementation complete."
-- **Blocked** → address issues, resubmit. Wait for Evaluator to write `review-code-v{N+1}.md` before proceeding.
+- **Blocked** → address issues, resubmit. Wait for the next Evaluator message before proceeding.
 
 ## Rules
 
@@ -32,5 +32,6 @@ Wait for Evaluator to write `review-code-v1.md` and send verdict:
 - Tests first, always. If a task has no natural unit test, write an integration test or smoke test.
 - Follow the code patterns and conventions in the existing codebase.
 - One commit per task minimum.
-- Do not notify the lead until `review-code-v{N}.md` exists and Evaluator has approved.
+- Do not notify the lead until you have received an approval message from the Evaluator teammate.
+- Never write any file under the `review/` directory. Only the Evaluator writes review files.
 - If stuck or a requirement is ambiguous, message the lead: "Blocked on Task N: [reason]."

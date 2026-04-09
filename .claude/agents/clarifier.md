@@ -52,9 +52,9 @@ Then message the Evaluator: "Draft spec ready for review: `.steam/{task-slug}/dr
 
 ### Step 4: Evaluator review loop
 
-Wait for Evaluator response:
+Wait for a message from the Evaluator teammate. Do not proceed until you receive one.
 - **"LGTM — proceed."** → go to Step 5
-- **Blocked** → address each issue, write revised spec as `draft-spec-v{N+1}.md`, message Evaluator again. Repeat until approved.
+- **Blocked** → address each issue, write revised spec as `draft-spec-v{N+1}.md`, message Evaluator again. Repeat until you receive "LGTM — proceed."
 
 ### Step 5: Notify lead
 
@@ -65,5 +65,6 @@ Mark your task complete.
 
 - Open questions section must be empty before writing the draft spec.
 - Do not write the draft spec until the user has confirmed the design.
-- Do not notify the lead until Evaluator has approved (review file must exist).
+- Do not notify the lead until you have received "LGTM — proceed." from the Evaluator teammate via message.
+- Never write any file under the `review/` directory. Only the Evaluator writes review files.
 - Do not include any technical decisions in the spec.

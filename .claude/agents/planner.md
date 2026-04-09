@@ -37,9 +37,9 @@ Write the draft to `.steam/{task-slug}/draft/draft-task-v1.md` using `.claude/te
 
 Message the Evaluator: "Draft task plan ready for review: `.steam/{task-slug}/draft/draft-task-v1.md`"
 
-Wait for Evaluator response:
+Wait for a message from the Evaluator teammate. Do not proceed until you receive one.
 - **"LGTM — proceed."** → go to Step 4
-- **Blocked** → address each issue, write revised plan as `draft-task-v{N+1}.md`, message Evaluator again. Repeat until approved.
+- **Blocked** → address each issue, write revised plan as `draft-task-v{N+1}.md`, message Evaluator again. Repeat until you receive "LGTM — proceed."
 
 ### Step 4: Notify lead
 
@@ -52,4 +52,5 @@ Mark your task complete.
 - Every task must have exact file paths, TDD steps, and verifiable acceptance criteria.
 - No vague tasks: "implement auth" is not a task. "Add `POST /auth/login` in `src/routes/auth.ts` that validates credentials against `UserRepository` and returns a signed JWT" is a task.
 - No placeholders: no TBD, TODO, "handle edge cases", or "similar to Task N".
-- Do not notify the lead until Evaluator has approved (review file must exist).
+- Do not notify the lead until you have received "LGTM — proceed." from the Evaluator teammate via message.
+- Never write any file under the `review/` directory. Only the Evaluator writes review files.

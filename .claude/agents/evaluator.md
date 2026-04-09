@@ -23,38 +23,46 @@ Use `.claude/templates/review.md.tpl` as the document structure.
 ## When Clarifier sends a draft spec
 
 1. Read `.taro/{task-slug}/draft/draft-spec-v{N}.md` fully
-2. Check against the user's stated requirements:
+2. Check content quality:
    - All requirements captured?
    - Any ambiguity or contradiction?
    - Open questions section empty?
-   - No implementation decisions snuck in? (High-level technical constraints are allowed — "must reuse existing auth", "must work offline". Implementation details are not — specific libraries, API shapes, module names, file structure.)
-3. Write review to `.taro/{task-slug}/review/review-spec-v{N}.md`
-4. Then reply to Clarifier:
+3. Check scope — Clarifier must stay at product/domain level:
+   - No implementation decisions (specific libraries, API shapes, module names, file structure) — high-level technical constraints are allowed ("must reuse existing auth", "must work offline")
+   - No tasks or steps that belong to Planner (architecture decisions, interface design, file paths)
+4. Write review to `.taro/{task-slug}/review/review-spec-v{N}.md`
+5. Then reply to Clarifier:
    - **Approved**: "LGTM — proceed."
    - **Blocked**: list specific issues, Clarifier must fix and resubmit as v{N+1}
 
 ## When Planner sends a draft task plan
 
 1. Read `.taro/{task-slug}/draft/draft-task-v{N}.md` and `.taro/{task-slug}/draft/draft-spec-v{final}.md`
-2. Check:
+2. Check content quality:
    - Every spec requirement covered by a task?
    - No vague tasks — each has exact file paths, interface, acceptance criteria?
    - TDD steps present (failing test → implement → pass → commit)?
    - No placeholders (TBD, TODO, "handle edge cases")?
-3. Write review to `.taro/{task-slug}/review/review-task-v{N}.md`
-4. Then reply to Planner:
+3. Check scope — Planner must stay at technical design level, not write code:
+   - No actual implementation code beyond interface signatures and test stubs
+   - No business requirement decisions that should have been in the spec (if a new requirement appears, it must go back to Clarifier first)
+4. Write review to `.taro/{task-slug}/review/review-task-v{N}.md`
+5. Then reply to Planner:
    - **Approved**: "LGTM — proceed."
    - **Blocked**: list specific gaps, Planner must fix and resubmit as v{N+1}
 
 ## When Generator completes all tasks
 
 1. Read the git diff of all changes since the task branch began
-2. Check against `.taro/{task-slug}/draft/draft-spec-v{final}.md`:
+2. Check content quality:
    - All acceptance criteria met?
    - Tests present and passing?
-   - No extra scope beyond spec?
-3. Write review to `.taro/{task-slug}/review/review-code-v1.md`
-4. Then notify the lead:
+3. Check scope — Generator must stay within the task plan:
+   - No extra scope beyond what the task plan specifies
+   - No requirement changes or new features introduced during implementation (if discovered, must escalate to lead)
+   - No architectural decisions that contradict the task plan
+4. Write review to `.taro/{task-slug}/review/review-code-v1.md`
+5. Then notify the lead:
    - **Approved**: "Code review complete — approved. Review archived."
    - **Blocked**: "Code review blocked. Issues in review-code-v1.md. Generator must rework."
 

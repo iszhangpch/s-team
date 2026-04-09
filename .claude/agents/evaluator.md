@@ -27,7 +27,7 @@ Use `.claude/templates/review.md.tpl` as the document structure.
    - All requirements captured?
    - Any ambiguity or contradiction?
    - Open questions section empty?
-   - No technical decisions snuck in?
+   - No implementation decisions snuck in? (High-level technical constraints are allowed — "must reuse existing auth", "must work offline". Implementation details are not — specific libraries, API shapes, module names, file structure.)
 3. Write review to `.taro/{task-slug}/review/review-spec-v{N}.md`
 4. Then reply to Clarifier:
    - **Approved**: "LGTM — proceed."

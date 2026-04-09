@@ -8,7 +8,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash .claude/hooks/task-completed.sh"
+            "command": "bash .claude/hooks/taro-task-completed.sh"
           }
         ]
       }

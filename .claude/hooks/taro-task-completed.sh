@@ -1,5 +1,5 @@
 #!/bin/bash
-# TaskCompleted hook for s-team
+# TaskCompleted hook for taro
 # Runs when any teammate marks a task complete.
 # Exit 0: allow completion.
 # Exit 2: block completion and send feedback (printed to stdout).

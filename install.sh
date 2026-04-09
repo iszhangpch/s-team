@@ -104,7 +104,7 @@ fi
 python3 -c "
 import json, os
 settings_file = '$SETTINGS_FILE'
-hook_cmd = 'bash .claude/hooks/task-completed.sh'
+hook_cmd = 'bash .claude/hooks/taro-task-completed.sh'
 
 with open(settings_file) as f:
     d = json.load(f)

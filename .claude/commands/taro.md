@@ -25,15 +25,25 @@ Execute these stages in order for the task: $ARGUMENTS
    - If that branch already exists locally or remotely, append `-a`, then `-b`, `-c`, etc. until a free name is found
    - Run: `git checkout -b feature/{task-slug}`
 
-### Stage 0b: Spawn Evaluator (stays online)
+### Stage 0b: Spawn all four teammates (all stay online)
 
-Use `Agent` tool with `team_name: taro-pipeline`, `subagent_type: evaluator`, `name: evaluator`.
-Prompt: "You are online for the full pipeline. Wait for messages from Clarifier, Planner, and Generator."
+Spawn all four teammates in parallel using the `Agent` tool with `team_name: taro-pipeline`. Each one goes online immediately and waits for a message from you before starting their work.
+
+- `subagent_type: evaluator`, `name: evaluator`
+  Prompt: "You are online for the full pipeline. Wait for messages from Clarifier, Planner, and Generator before reviewing."
+
+- `subagent_type: clarifier`, `name: clarifier`
+  Prompt: "You are online. Task slug: {task-slug}. Wait for a 'START' message from the lead before beginning your process."
+
+- `subagent_type: planner`, `name: planner`
+  Prompt: "You are online. Task slug: {task-slug}. Wait for a 'START' message from the lead before beginning your process."
+
+- `subagent_type: generator`, `name: generator`
+  Prompt: "You are online. Task slug: {task-slug}. Wait for a 'START' message from the lead before beginning your process."
 
 ### Stage 1: Clarifier
 
-Use `Agent` tool with `team_name: taro-pipeline`, `subagent_type: clarifier`, `name: clarifier`.
-Prompt: "The user wants to build: $ARGUMENTS. Task slug: {task-slug}. Follow your process."
+Send a message to clarifier: "START. The user wants to build: $ARGUMENTS. Task slug: {task-slug}. Follow your process."
 
 Wait for Clarifier to send you a message "spec.md complete."
 
@@ -48,8 +58,7 @@ Wait for user input before proceeding.
 
 ### Stage 2: Planner
 
-Use `Agent` tool with `team_name: taro-pipeline`, `subagent_type: planner`, `name: planner`.
-Prompt: "Task slug: {task-slug}. The approved spec is ready. Follow your process."
+Send a message to planner: "START. The approved spec is ready. Task slug: {task-slug}. Follow your process."
 
 Wait for Planner to send you a message "task.md complete."
 
@@ -64,8 +73,7 @@ Wait for user input before proceeding.
 
 ### Stage 3: Generator
 
-Use `Agent` tool with `team_name: taro-pipeline`, `subagent_type: generator`, `name: generator`.
-Prompt: "Task slug: {task-slug}. The approved task plan is ready. Follow your process."
+Send a message to generator: "START. The approved task plan is ready. Task slug: {task-slug}. Follow your process."
 
 Wait for Generator to send you a message "Implementation complete."
 
@@ -78,7 +86,7 @@ Press Enter to finish, or type REVIEW to inspect diffs.
 
 ## Resume
 
-If asked to resume from a stage, use `TeamCreate` to recreate the team, then spawn only the Evaluator (if not running) and the requested stage's teammate using `Agent` with `team_name`. Pass the task slug explicitly.
+If asked to resume from a stage, use `TeamCreate` to recreate the team, then re-run Stage 0b to spawn all four teammates again (they will go online and wait). Then send a `START` message to the appropriate teammate to resume from the requested stage. Pass the task slug explicitly.
 
 ## Rules
 
